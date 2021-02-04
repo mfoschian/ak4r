@@ -9,7 +9,7 @@ module Ak4r
     ##
     # ==== Options
     # 
-    # * +:secret+ -           Secret used as salt to generate API keys.
+    # * +:salt+ -             Salt to generate API keys.
     #  
     # * +:header_key+ -       A way to override the header's name used to store the API key.
     #                         The value given here should reflect how Rack interprets the
