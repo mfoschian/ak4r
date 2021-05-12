@@ -19,7 +19,7 @@ module Ak4r
       loop do
         raw = self.friendly_token
         enc = OpenSSL::HMAC.hexdigest(DIGEST, key, raw)
-        break [raw, enc] unless Ak4r::ApiKey.where(hash: enc).any?
+        break [raw, enc] unless Ak4r::ApiKey.where(key_hash: enc).any?
       end
     end
     

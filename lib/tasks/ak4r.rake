@@ -9,11 +9,11 @@ namespace :ak4r do
     end
   end
   desc "Create new API Key"
-  task :create, [:name, :scopes] => :environment do    
+  task :create, [:name, :scopes] => :environment do |t, args| 
     secret, hash = Ak4r::TokenGenerator.generate
     api_key = Ak4r::ApiKey.create(
       name: args[:name],
-      hash: hash,
+      key_hash: hash,
       prefix: Ak4r::TokenGenerator.friendly_token(7),
       scopes:  args[:scopes].split(';')
     )

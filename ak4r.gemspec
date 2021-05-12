@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'ak4r'
-  s.version     = '0.2.2'
+  s.version     = '0.2.3'
   s.summary     = "API Keys for Ruby on Rails"
   s.description = "Middleware for adding api keys validation to API"
   s.authors     = ["Stefano Salvador"]

@@ -59,7 +59,7 @@ module Ak4r
       raise Ak4r::ApiException.new(403, "API Key expired") if(api_key.valid_until && api_key.valid_until < Time.now)
 
       api_key_hash = Ak4r::TokenGenerator.digest(api_key_secret)
-      raise Ak4r::ApiException.new(403, "API Key invalid") if(api_key_hash != api_key.hash)
+      raise Ak4r::ApiException.new(403, "API Key invalid") if(api_key_hash != api_key.key_hash)
       
       request = Rack::Request.new(env)
       scope = "#{request.request_method}:#{request.path}"
