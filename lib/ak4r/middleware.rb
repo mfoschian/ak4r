@@ -62,7 +62,8 @@ module Ak4r
       raise Ak4r::ApiException.new(403, "API Key invalid") if(api_key_hash != api_key.key_hash)
       
       request = Rack::Request.new(env)
-      scope = "#{request.request_method}:#{request.path}"
+      route = Rails.application.routes.recognize_path(request.path, {method: request.request_method}) || {controller: "route_path_not_recognized #{request.path}"}
+      scope = "#{request.request_method}:/#{route[:controller]}"
       raise Ak4r::ApiException.new(403, "API Key not allowed for scope #{scope}") unless(api_key.scopes.include?(scope))
       @app.call(env)
     end
