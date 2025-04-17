@@ -71,6 +71,7 @@ and prefixes them with HTTP and subsequently underscores them. For example if an
 API client passed "X-API-KEY" in the header, Rack would interpret that header
 as "HTTP_X_API_KEY". "HTTP_X_API_KEY" is the default header. If you want to use
 a different header you can specify it with this option.
+With the default configuration use "X-API-KEY" as header key in requests.
 
 ### :url_restriction
 This is an option that can restrict the middleware to specific URLs.
