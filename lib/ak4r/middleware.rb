@@ -48,7 +48,7 @@ module Ak4r
     
     private
 
-    def process_request(env)      
+    def process_request(env)
       api_key_string = env[Ak4r.config.header_key]
       raise Ak4r::ApiException.new(403, "API Key required") if(api_key_string.nil?)
 
@@ -60,10 +60,11 @@ module Ak4r
 
       api_key_hash = Ak4r::TokenGenerator.digest(api_key_secret)
       raise Ak4r::ApiException.new(403, "API Key invalid") if(api_key_hash != api_key.key_hash)
-      
-      request = Rack::Request.new(env)
-      route = Rails.application.routes.recognize_path(request.path, {method: request.request_method}) || {controller: "route_path_not_recognized #{request.path}"}
-      scope = "#{request.request_method}:/#{route[:controller]}"
+
+      rq_path = env["QUERY_STRING"].blank? ? env["PATH_INFO"] : env["PATH_INFO"] + "?" + env["QUERY_STRING"]
+      rq_method = env["REQUEST_METHOD"]
+      route = Rails.application.routes.recognize_path(rq_path, {method: rq_method}) || {controller: "route_path_not_recognized #{request.path}"}
+      scope = "#{rq_method}:/#{route[:controller]}"
       raise Ak4r::ApiException.new(403, "API Key not allowed for scope #{scope}") unless(api_key.scopes.include?(scope))
       @app.call(env)
     end
@@ -73,7 +74,7 @@ module Ak4r
     end
 
     def url_matches(key, env)
-      path = Rack::Request.new(env).fullpath
+      path = env["PATH_INFO"]
       Ak4r.config.public_send(key).select { |url_regex| path.match(url_regex) }.empty? ? false : true
     end
   end
